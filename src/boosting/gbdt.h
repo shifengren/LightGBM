@@ -384,7 +384,7 @@ protected:
   /*! \brief Tree learner, will use this class to learn trees */
   std::unique_ptr<TreeLearner> tree_learner_;
   /*! \brief Objective function */
-  const ObjectiveFunction* objective_function_;
+  const ObjectiveFunction* objective_function_; // why use unique_ptr ?
   /*! \brief Store and update training data's score */
   std::unique_ptr<ScoreUpdater> train_score_updater_;
   /*! \brief Metrics for training data */

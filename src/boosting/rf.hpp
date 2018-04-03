@@ -18,7 +18,7 @@ namespace LightGBM {
 class RF: public GBDT {
 public:
 
-  RF() : GBDT() { 
+  RF() : GBDT() {
     average_output_ = true;
   }
 
@@ -37,7 +37,7 @@ public:
     } else {
       CHECK(train_data->metadata().init_score() == nullptr);
     }
-    // cannot use RF for multi-class. 
+    // cannot use RF for multi-class.
     CHECK(num_tree_per_iteration_ == 1);
     // not shrinkage rate for the RF
     shrinkage_rate_ = 1.0f;

@@ -432,7 +432,7 @@ public:
     const int sub_feature = feature2subfeature_[i];
     return feature_groups_[group]->bin_mappers_[sub_feature]->num_bin();
   }
-  
+
   inline int FeatureGroupNumBin(int group) const {
     return feature_groups_[group]->num_total_bin_;
   }
@@ -447,7 +447,7 @@ public:
     const int group = feature2group_[i];
     return feature_groups_[group]->bin_data_.get();
   }
-  
+
   inline const Bin* FeatureGroupBin(int group) const {
     return feature_groups_[group]->bin_data_.get();
   }
@@ -465,7 +465,7 @@ public:
   inline BinIterator* FeatureGroupIterator(int group) const {
     return feature_groups_[group]->FeatureGroupIterator();
   }
-  
+
   inline double RealThreshold(int i, uint32_t threshold) const {
     const int group = feature2group_[i];
     const int sub_feature = feature2subfeature_[i];
