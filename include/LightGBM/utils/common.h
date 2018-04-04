@@ -358,7 +358,7 @@ inline static void Int32ToStr(int32_t value, char* buffer) {
   Uint32ToStr(u, buffer);
 }
 
-inline static void DoubleToStr(double value, char* buffer, size_t 
+inline static void DoubleToStr(double value, char* buffer, size_t
                                #ifdef _MSC_VER
                                buffer_len
                                #endif
@@ -402,7 +402,7 @@ struct __TToStringHelperFast {
 
 template<typename T>
 struct __TToStringHelperFast<T, true, false> {
-  void operator()(T value, char* buffer, size_t 
+  void operator()(T value, char* buffer, size_t
                   #ifdef _MSC_VER
                   buf_len
                   #endif
@@ -738,7 +738,7 @@ static void ParallelSort(_RanIt _First, _RanIt _Last, _Pr _Pred) {
 // Check that all y[] are in interval [ymin, ymax] (end points included); throws error if not
 template <typename T>
 inline static void CheckElementsIntervalClosed(const T *y, T ymin, T ymax, int ny, const char *callername) {
-  auto fatal_msg = [&y, &ymin, &ymax, &callername](int i) { 
+  auto fatal_msg = [&y, &ymin, &ymax, &callername](int i) {
     std::ostringstream os;
     os << "[%s]: does not tolerate element [#%i = " << y[i] << "] outside [" << ymin << ", " << ymax << "]";
     Log::Fatal(os.str().c_str(), callername, i);

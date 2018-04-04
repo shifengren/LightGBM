@@ -414,7 +414,7 @@ inline void Tree::Split(int leaf, int feature, int real_feature,
   // add two new leaves
   left_child_[new_node_idx] = ~leaf;
   right_child_[new_node_idx] = ~num_leaves_;
-  // update new leaves
+  // update new leaves' parent
   leaf_parent_[leaf] = new_node_idx;
   leaf_parent_[num_leaves_] = new_node_idx;
   // save current leaf value to internal node before change
