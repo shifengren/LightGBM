@@ -15,6 +15,7 @@ class FeatureMetainfo {
 public:
   int num_bin;
   MissingType missing_type;
+  // ?
   int8_t bias = 0;
   uint32_t default_bin;
   /*! \brief pointer of tree config */
@@ -109,7 +110,7 @@ public:
     double best_sum_left_gradient = 0;
     double best_sum_left_hessian = 0;
     double gain_shift = GetLeafSplitGain(sum_gradient, sum_hessian, meta_->tree_config->lambda_l1, meta_->tree_config->lambda_l2);
-    
+
     double min_gain_shift = gain_shift + meta_->tree_config->min_gain_to_split;
     bool is_full_categorical = meta_->missing_type == MissingType::None;
     int used_bin = meta_->num_bin - 1 + is_full_categorical;
@@ -320,7 +321,7 @@ private:
     data_size_t best_left_count = 0;
     uint32_t best_threshold = static_cast<uint32_t>(meta_->num_bin);
 
-    if (dir == -1) {
+    if (dir == -1) { // ?
 
       double sum_right_gradient = 0.0f;
       double sum_right_hessian = kEpsilon;
@@ -579,7 +580,7 @@ public:
       last_used_time_[slot] = ++cur_time_;
       return true;
     } else {
-      // choose the least used slot 
+      // choose the least used slot
       int slot = static_cast<int>(ArrayArgs<int>::ArgMin(last_used_time_));
       *out = pool_[slot].get();
       last_used_time_[slot] = ++cur_time_;
@@ -626,7 +627,7 @@ private:
   bool is_enough_ = false;
   std::vector<int> mapper_;
   std::vector<int> inverse_mapper_;
-  std::vector<int> last_used_time_;
+  std::vector<int> last_used_time_; //?
   int cur_time_ = 0;
 };
 

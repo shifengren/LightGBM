@@ -483,7 +483,7 @@ struct ParameterAlias {
     for (const auto& pair : *params) {
       auto alias = alias_table.find(pair.first);
       if (alias != alias_table.end()) { // found alias
-        auto alias_set = tmp_map.find(alias->second); 
+        auto alias_set = tmp_map.find(alias->second);
         if (alias_set != tmp_map.end()) { // alias already set
           // set priority by length & alphabetically to ensure reproducible behavior
           if (alias_set->second.size() < pair.first.size() ||
@@ -510,7 +510,7 @@ struct ParameterAlias {
         params->emplace(pair.first, params->at(pair.second));
         params->erase(pair.second);
       } else {
-        Log::Warning("%s is set=%s, %s=%s will be ignored. Current value: %s=%s.", 
+        Log::Warning("%s is set=%s, %s=%s will be ignored. Current value: %s=%s.",
           pair.first.c_str(), alias->second.c_str(), pair.second.c_str(), params->at(pair.second).c_str(),
           pair.first.c_str(), alias->second.c_str());
       }

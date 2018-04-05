@@ -206,11 +206,14 @@ public:
   void RecomputeMaxDepth();
 
 private:
-
+  // ?
   std::string NumericalDecisionIfElse(int node) const;
 
   std::string CategoricalDecisionIfElse(int node) const;
-
+  /*!
+  * \param fval feature value
+  * \param node id or index of node
+  */
   inline int NumericalDecision(double fval, int node) const {
     uint8_t missing_type = GetMissingType(decision_type_[node]);
     if (std::isnan(fval)) {
@@ -367,7 +370,7 @@ private:
   std::vector<uint32_t> threshold_in_bin_;
   /*! \brief A non-leaf node's split threshold in feature value */
   std::vector<double> threshold_;
-  int num_cat_;
+  int num_cat_; // ?
   std::vector<int> cat_boundaries_inner_;
   std::vector<uint32_t> cat_threshold_inner_;
   std::vector<int> cat_boundaries_;

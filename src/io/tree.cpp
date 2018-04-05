@@ -84,7 +84,7 @@ int Tree::SplitCategorical(int leaf, int feature, int real_feature, const uint32
     SetMissingType(&decision_type_[new_node_idx], 2);
   }
   threshold_in_bin_[new_node_idx] = num_cat_;
-  threshold_[new_node_idx] = num_cat_;
+  threshold_[new_node_idx] = num_cat_; // int to double
   ++num_cat_;
   cat_boundaries_.push_back(cat_boundaries_.back() + num_threshold);
   for (int i = 0; i < num_threshold; ++i) {
@@ -97,7 +97,7 @@ int Tree::SplitCategorical(int leaf, int feature, int real_feature, const uint32
   ++num_leaves_;
   return num_leaves_ - 1;
 }
-
+// ?
 #define PredictionFun(niter, fidx_in_iter, start_pos, decision_fun, iter_idx, data_idx) \
 std::vector<std::unique_ptr<BinIterator>> iter((niter)); \
 for (int i = 0; i < (niter); ++i) { \
@@ -133,7 +133,8 @@ void Tree::AddPredictionToScore(const Dataset* data, data_size_t num_data, doubl
   if (num_cat_ > 0) {
     if (data->num_features() > num_leaves_ - 1) {
       Threading::For<data_size_t>(0, num_data, [this, &data, score, &default_bins, &max_bins]
-      (int, data_size_t start, data_size_t end) {
+      (int, data_size_t start, data_size_t end) { // how to transfer start, end paramter ?
+        // var i used in 'if(num_cat_ > 0)' block, it's seems that i has no declaration
         PredictionFun(num_leaves_ - 1, split_feature_inner_[i], start, DecisionInner, node, i);
       });
     } else {
@@ -480,7 +481,7 @@ Tree::Tree(const char* str, size_t* used_len) {
   while (read_line < max_num_line) {
     if (*p == '\r' || *p == '\n') break;
     auto start = p;
-    while (*p != '=') ++p; 
+    while (*p != '=') ++p;
     std::string key(start, p - start);
     ++p;
     start = p;

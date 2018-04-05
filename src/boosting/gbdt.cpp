@@ -333,7 +333,7 @@ void GBDT::RefitTree(const std::vector<std::vector<int>>& tree_leaf_prediction) 
   int num_iterations = static_cast<int>(models_.size() / num_tree_per_iteration_);
   std::vector<int> leaf_pred(num_data_);
   for (int iter = 0; iter < num_iterations; ++iter) {
-    Boosting();
+    Boosing(); // ?
     for (int tree_id = 0; tree_id < num_tree_per_iteration_; ++tree_id) {
       int model_index = iter * num_tree_per_iteration_ + tree_id;
       #pragma omp parallel for schedule(static)
@@ -353,7 +353,7 @@ void GBDT::RefitTree(const std::vector<std::vector<int>>& tree_leaf_prediction) 
 double GBDT::BoostFromAverage() {
   // boosting from average label; or customized "average" if implemented for the current objective
   if (models_.empty() && !train_score_updater_->has_init_score()
-      && num_class_ <= 1
+      && num_class_ <= 1 // 条件：要类别的数量小于等于1？
       && objective_function_ != nullptr) {
     if (gbdt_config_->boost_from_average) {
       double init_score = ObtainAutomaticInitialScore(objective_function_);
@@ -378,11 +378,12 @@ bool GBDT::TrainOneIter(const score_t* gradients, const score_t* hessians) {
   double init_score = 0.0f;
   // boosting first
   if (gradients == nullptr || hessians == nullptr) {
+    // 从一个初始分数开始boost
     init_score = BoostFromAverage();
     #ifdef TIMETAG
     auto start_time = std::chrono::steady_clock::now();
     #endif
-
+    // 作用，大概hi获取gradient
     Boosting();
     gradients = gradients_.data();
     hessians = hessians_.data();
@@ -397,7 +398,7 @@ bool GBDT::TrainOneIter(const score_t* gradients, const score_t* hessians) {
   #endif
 
   // bagging logic
-  Bagging(iter_);
+  Bagging(iter_); // 在当前迭代过程中是否需要使用bagging的方法
 
   #ifdef TIMETAG
   bagging_time += std::chrono::steady_clock::now() - start_time;
@@ -434,8 +435,7 @@ bool GBDT::TrainOneIter(const score_t* gradients, const score_t* hessians) {
 
     if (new_tree->num_leaves() > 1) {
       should_continue = true;
-      tree_learner_->RenewTreeOutput(new_tree.get(), objective_function_, train_score_updater_->score() + bias,
-                                     num_data_, bag_data_indices_.data(), bag_data_cnt_);
+      tree_learner_->RenewTreeOutput(new_tree.get(), objective_function_, train_score_updater_->score() + bias, num_data_, bag_data_indices_.data(), bag_data_cnt_);
       // shrinkage by learning rate
       new_tree->Shrinkage(shrinkage_rate_);
       // update score

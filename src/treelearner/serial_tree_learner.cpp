@@ -362,12 +362,16 @@ bool SerialTreeLearner::BeforeFindBestSplit(const Tree* tree, int left_leaf, int
     larger_leaf_histogram_array_ = nullptr;
   } else if (num_data_in_left_child < num_data_in_right_child) {
     // put parent(left) leaf's histograms into larger leaf's histograms
-    if (histogram_pool_.Get(left_leaf, &larger_leaf_histogram_array_)) { parent_leaf_histogram_array_ = larger_leaf_histogram_array_; }
+    if (histogram_pool_.Get(left_leaf, &larger_leaf_histogram_array_)) {
+        parent_leaf_histogram_array_ = larger_leaf_histogram_array_;
+       }
     histogram_pool_.Move(left_leaf, right_leaf);
     histogram_pool_.Get(left_leaf, &smaller_leaf_histogram_array_);
   } else {
     // put parent(left) leaf's histograms to larger leaf's histograms
-    if (histogram_pool_.Get(left_leaf, &larger_leaf_histogram_array_)) { parent_leaf_histogram_array_ = larger_leaf_histogram_array_; }
+    if (histogram_pool_.Get(left_leaf, &larger_leaf_histogram_array_)) {
+        parent_leaf_histogram_array_ = larger_leaf_histogram_array_;
+      }
     histogram_pool_.Get(right_leaf, &smaller_leaf_histogram_array_);
   }
   // split for the ordered bin
@@ -424,8 +428,9 @@ void SerialTreeLearner::FindBestSplits() {
     }
     is_feature_used[feature_index] = 1;
   }
+  // 如果 parent_leaf_histogram_array is nullptr, then use_subtract is false
   bool use_subtract = parent_leaf_histogram_array_ != nullptr;
-  ConstructHistograms(is_feature_used, use_subtract);
+  ConstructHistograms(is_feature_used, use_subtract); //
   FindBestSplitsFromHistograms(is_feature_used, use_subtract);
 }
 
@@ -442,7 +447,9 @@ void SerialTreeLearner::ConstructHistograms(const std::vector<int8_t>& is_featur
                                    ordered_gradients_.data(), ordered_hessians_.data(), is_constant_hessian_,
                                    ptr_smaller_leaf_hist_data);
 
-  if (larger_leaf_histogram_array_ != nullptr && !use_subtract) {
+  // 直方图做差法的条件：父亲结点，左结点存在
+  // 这个地方的逻辑似乎是，当父亲结点存在的时候不使用直方图做差法构造右结点
+  if (larger_leaf_histogram_array_ != nullptr && !use_subtract) { // 不使用直方图做差的方法构造
     // construct larger leaf
     HistogramBinEntry* ptr_larger_leaf_hist_data = larger_leaf_histogram_array_[0].RawData() - 1;
     train_data_->ConstructHistograms(is_feature_used,
@@ -617,7 +624,7 @@ void SerialTreeLearner::RenewTreeOutput(Tree* tree, const ObjectiveFunction* obj
       for (int i = 0; i < tree->num_leaves(); ++i) {
         tree->SetLeafOutput(i, outputs[i] / Network::num_machines());
       }
-    } 
+    }
   }
 }
 

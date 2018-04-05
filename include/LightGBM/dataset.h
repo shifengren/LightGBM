@@ -571,6 +571,7 @@ private:
   std::vector<int> real_feature_idx_;
   std::vector<int> feature2group_;
   std::vector<int> feature2subfeature_;
+  // ?
   std::vector<uint64_t> group_bin_boundaries_;
   std::vector<int> group_feature_start_;
   std::vector<int> group_feature_cnt_;
