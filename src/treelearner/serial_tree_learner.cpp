@@ -53,6 +53,7 @@ void SerialTreeLearner::Init(const Dataset* train_data, bool is_constant_hessian
     for (int i = 0; i < train_data_->num_features(); ++i) {
       total_histogram_size += sizeof(HistogramBinEntry) * train_data_->FeatureNumBin(i);
     }
+    // pool * 1024 * 1024 =
     max_cache_size = static_cast<int>(tree_config_->histogram_pool_size * 1024 * 1024 / total_histogram_size);
   }
   // at least need 2 leaves
@@ -360,14 +361,16 @@ bool SerialTreeLearner::BeforeFindBestSplit(const Tree* tree, int left_leaf, int
   if (right_leaf < 0) {
     histogram_pool_.Get(left_leaf, &smaller_leaf_histogram_array_);
     larger_leaf_histogram_array_ = nullptr;
+    // 当左孩子的data数量 小于 右孩子的data数量时
   } else if (num_data_in_left_child < num_data_in_right_child) {
     // put parent(left) leaf's histograms into larger leaf's histograms
     if (histogram_pool_.Get(left_leaf, &larger_leaf_histogram_array_)) {
         parent_leaf_histogram_array_ = larger_leaf_histogram_array_;
-       }
+    }
     histogram_pool_.Move(left_leaf, right_leaf);
     histogram_pool_.Get(left_leaf, &smaller_leaf_histogram_array_);
   } else {
+    // 当左孩子的data数量 大于 右孩子的data数量时
     // put parent(left) leaf's histograms to larger leaf's histograms
     if (histogram_pool_.Get(left_leaf, &larger_leaf_histogram_array_)) {
         parent_leaf_histogram_array_ = larger_leaf_histogram_array_;

@@ -222,10 +222,11 @@ private:
   std::vector<std::unique_ptr<BinMapper>> bin_mappers_;
   /*! \brief Bin offsets for sub features */
   std::vector<uint32_t> bin_offsets_;
-  /*! \brief Bin data of this feature */
+  /*! \brief Bin data of this feature group */
   std::unique_ptr<Bin> bin_data_;
   /*! \brief True if this feature is sparse */
   bool is_sparse_;
+  /*! \brief total number bin in this feature group*/
   int num_total_bin_;
 };
 

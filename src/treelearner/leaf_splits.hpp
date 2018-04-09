@@ -26,7 +26,7 @@ public:
 
   /*!
 
-  * \brief Init split on current leaf on partial data. 
+  * \brief Init split on current leaf on partial data.
   * \param leaf Index of current leaf
   * \param data_partition current data partition
   * \param sum_gradients
@@ -111,7 +111,7 @@ public:
 
   /*! \brief Get sum of gradients of current leaf */
   double sum_gradients() const { return sum_gradients_; }
-  
+
   /*! \brief Get sum of hessians of current leaf */
   double sum_hessians() const { return sum_hessians_; }
 

@@ -328,7 +328,7 @@ private:
       data_size_t right_count = 0;
 
       int t = meta_->num_bin - 1 - bias - use_na_as_missing;
-      const int t_end = 1 - bias;
+      const int t_end = 1 - bias; // bias mean default_bin offset?
 
       // from right to left, and we don't need data in bin0
       for (; t >= t_end; --t) {
@@ -377,7 +377,7 @@ private:
       data_size_t left_count = 0;
 
       int t = 0;
-      const int t_end = meta_->num_bin - 2 - bias;
+      const int t_end = meta_->num_bin - 2 - bias; // -2 ?
 
       if (use_na_as_missing && bias == 1) {
         sum_left_gradient = sum_gradient;
@@ -624,6 +624,7 @@ private:
   std::vector<FeatureMetainfo> feature_metas_;
   int cache_size_;
   int total_size_;
+  // ?
   bool is_enough_ = false;
   std::vector<int> mapper_;
   std::vector<int> inverse_mapper_;

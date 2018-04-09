@@ -100,6 +100,7 @@ public:
   std::string initscore_filename = "";
   std::vector<std::string> valid_data_filenames;
   std::vector<std::string> valid_data_initscores;
+  // 是否启动快照服务：将训练过程中的每一步的模型都保存下来
   int snapshot_freq = -1;
   std::string output_model = "LightGBM_model.txt";
   std::string output_result = "LightGBM_predict_result.txt";

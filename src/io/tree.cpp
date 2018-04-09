@@ -112,7 +112,7 @@ for (data_size_t i = start; i < end; ++i) {\
   score[(data_idx)] += static_cast<double>(leaf_value_[~node]);\
 }\
 
-void Tree::AddPredictionToScore(const Dataset* data, data_size_t num_data, double* score) const {
+void Tree::AddPredictionTocSore(const Dataset* data, data_size_t num_data, double* score) const {
   if (num_leaves_ <= 1) {
     if (leaf_value_[0] != 0.0f) {
       #pragma omp parallel for schedule(static)

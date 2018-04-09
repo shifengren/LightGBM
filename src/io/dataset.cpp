@@ -187,7 +187,7 @@ std::vector<std::vector<int>> FastFeatureBundling(std::vector<std::unique_ptr<Bi
         cnt_non_zero += static_cast<int>(num_data * (1.0f - bin_mappers[fidx]->sparse_rate()));
       }
       double sparse_rate = 1.0f - static_cast<double>(cnt_non_zero) / (num_data);
-      // take apart small sparse group, due it will not gain on speed 
+      // take apart small sparse group, due it will not gain on speed
       if (sparse_rate >= sparse_threshold && is_enable_sparse) {
         for (size_t j = 0; j < features_in_group[i].size(); ++j) {
           const int fidx = features_in_group[i][j];
@@ -634,7 +634,7 @@ void Dataset::ConstructHistograms(const std::vector<int8_t>& is_feature_used,
         OMP_LOOP_EX_BEGIN();
         int group = used_group[gi];
         // feature is not used
-        auto data_ptr = hist_data + group_bin_boundaries_[group];
+        auto data_ptr = hist_data + group_bin_boundaries_[group]; //
         const int num_bin = feature_groups_[group]->num_total_bin_;
         std::memset(data_ptr + 1, 0, (num_bin - 1) * sizeof(HistogramBinEntry));
         // construct histograms for smaller leaf

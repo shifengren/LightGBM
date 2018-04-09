@@ -55,6 +55,7 @@ public:
     int64_t offset = cur_tree_id * num_data_;
     #pragma omp parallel for schedule(static)
     for (int64_t i = 0; i < num_data_; ++i) {
+      // 每条数据的得分
       score_[offset + i] += val;
     }
   }

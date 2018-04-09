@@ -75,7 +75,7 @@ public:
       }
     }
   }
-  
+
   ~RegressionL2loss() {
   }
 
@@ -218,7 +218,7 @@ public:
 
   bool IsRenewTreeOutput() const override { return true; }
 
-  double RenewTreeOutput(double, const double* pred, 
+  double RenewTreeOutput(double, const double* pred,
                          const data_size_t* index_mapper,
                          const data_size_t* bagging_mapper,
                          data_size_t num_data_in_leaf) const override {
@@ -672,7 +672,7 @@ public:
   const char* GetName() const override {
     return "gamma";
   }
- 
+
 };
 
 /*!
@@ -696,7 +696,7 @@ public:
       #pragma omp parallel for schedule(static)
       for (data_size_t i = 0; i < num_data_; ++i) {
         gradients[i] = static_cast<score_t>(-label_[i] * std::exp((1 - rho_) * score[i]) + std::exp((2 - rho_) * score[i]));
-        hessians[i] = static_cast<score_t>(-label_[i] * (1 - rho_) * std::exp((1 - rho_) * score[i]) + 
+        hessians[i] = static_cast<score_t>(-label_[i] * (1 - rho_) * std::exp((1 - rho_) * score[i]) +
           (2 - rho_) * std::exp((2 - rho_) * score[i]));
       }
     } else {

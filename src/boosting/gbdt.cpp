@@ -309,8 +309,11 @@ double ObtainAutomaticInitialScore(const ObjectiveFunction* fobj) {
 void GBDT::Train(int snapshot_freq, const std::string& model_output_path) {
   bool is_finished = false;
   auto start_time = std::chrono::steady_clock::now();
+  //
   for (int iter = 0; iter < gbdt_config_->num_iterations && !is_finished; ++iter) {
+    //
     is_finished = TrainOneIter(nullptr, nullptr);
+
     if (!is_finished) {
       is_finished = EvalAndCheckEarlyStopping();
     }
@@ -358,7 +361,9 @@ double GBDT::BoostFromAverage() {
     if (gbdt_config_->boost_from_average) {
       double init_score = ObtainAutomaticInitialScore(objective_function_);
       if (std::fabs(init_score) > kEpsilon) {
+        // 训练数据加分
         train_score_updater_->AddScore(init_score, 0);
+        // 验证集得分
         for (auto& score_updater : valid_score_updater_) {
           score_updater->AddScore(init_score, 0);
         }
@@ -435,6 +440,7 @@ bool GBDT::TrainOneIter(const score_t* gradients, const score_t* hessians) {
 
     if (new_tree->num_leaves() > 1) {
       should_continue = true;
+      // 更新
       tree_learner_->RenewTreeOutput(new_tree.get(), objective_function_, train_score_updater_->score() + bias, num_data_, bag_data_indices_.data(), bag_data_cnt_);
       // shrinkage by learning rate
       new_tree->Shrinkage(shrinkage_rate_);

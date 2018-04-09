@@ -166,6 +166,7 @@ namespace LightGBM {
 
     int left_cnt = -1;
     for (int i = 0; i < num_distinct_values; ++i) {
+      // 找到第一个大于0的值
       if (distinct_values[i] > -kZeroThreshold) {
         left_cnt = i;
         break;
