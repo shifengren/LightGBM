@@ -756,8 +756,10 @@ void DatasetLoader::ConstructBinMappersFromTextData(int rank, int num_machines, 
         sample_values.resize(inner_data.first + 1);
         sample_indices.resize(inner_data.first + 1);
       }
+      // first=fidx, second=fval
       if (std::fabs(inner_data.second) > kZeroThreshold || std::isnan(inner_data.second)) {
         sample_values[inner_data.first].emplace_back(inner_data.second);
+        //
         sample_indices[inner_data.first].emplace_back(i);
       }
     }
@@ -808,6 +810,8 @@ void DatasetLoader::ConstructBinMappersFromTextData(int rank, int num_machines, 
         bin_type = BinType::CategoricalBin;
       }
       bin_mappers[i].reset(new BinMapper());
+      // 会对sample_values[i].data()返回的数据排序
+      // 那如何保证sample_values[i]中的数据的与label的对应关系不变化呢
       bin_mappers[i]->FindBin(sample_values[i].data(), static_cast<int>(sample_values[i].size()),
                               sample_data.size(), io_config_.max_bin, io_config_.min_data_in_bin, filter_cnt, bin_type, io_config_.use_missing, io_config_.zero_as_missing);
       OMP_LOOP_EX_END();
@@ -928,6 +932,7 @@ void DatasetLoader::ExtractFeaturesFromMemory(std::vector<std::string>& text_dat
           // if is used feature
           int group = dataset->feature2group_[feature_idx];
           int sub_feature = dataset->feature2subfeature_[feature_idx];
+          // 将每条数据所在的行idx映射到对应的bin上
           dataset->feature_groups_[group]->PushData(tid, sub_feature, i, inner_data.second);
         } else {
           if (inner_data.first == weight_idx_) {
@@ -992,7 +997,7 @@ void DatasetLoader::ExtractFeaturesFromMemory(std::vector<std::string>& text_dat
 }
 
 /*! \brief Extract local features from file */
-void DatasetLoader::ExtractFeaturesFromFile(const char* filename, const Parser* parser, const std::vector<data_size_t>& used_data_indices, Dataset* dataset) {
+void DatasetLoader::  (const char* filename, const Parser* parser, const std::vector<data_size_t>& used_data_indices, Dataset* dataset) {
   std::vector<double> init_score;
   if (predict_fun_ != nullptr) {
     init_score = std::vector<double>(dataset->num_data_ * num_class_);

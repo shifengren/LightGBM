@@ -16,7 +16,7 @@ namespace LightGBM {
 */
 class DataPartition {
 public:
-  // 叶子节点的个数提取决定好？
+
   DataPartition(data_size_t num_data, int num_leaves)
     :num_data_(num_data), num_leaves_(num_leaves) {
     leaf_begin_.resize(num_leaves_);

@@ -116,7 +116,7 @@ private:
   /*! \brief Pointer of data set */
   const Dataset* data_;
   /*! \brief Scores for data set */
-  std::vector<double> score_; // index is ?
+  std::vector<double> score_; // index is data idx
   bool has_init_score_;
 };
 

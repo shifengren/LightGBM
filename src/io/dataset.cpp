@@ -251,12 +251,12 @@ void Dataset::Construct(
   real_feature_idx_.resize(num_features_);
   feature2group_.resize(num_features_);
   feature2subfeature_.resize(num_features_);
-  for (int i = 0; i < num_groups_; ++i) {
+  for (int i = 0; i < num_groups_; ++i) { // group idx
     auto cur_features = features_in_group[i];
     int cur_cnt_features = static_cast<int>(cur_features.size());
     // get bin_mappers
     std::vector<std::unique_ptr<BinMapper>> cur_bin_mappers;
-    for (int j = 0; j < cur_cnt_features; ++j) {
+    for (int j = 0; j < cur_cnt_features; ++j) { // subfeat idx
       int real_fidx = cur_features[j];
       used_feature_map_[real_fidx] = cur_fidx;
       real_feature_idx_[cur_fidx] = real_fidx;

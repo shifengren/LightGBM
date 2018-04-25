@@ -69,7 +69,7 @@ public:
     const data_size_t rest = num_data & 0x3;
     data_size_t i = 0;
     for (; i < num_data - rest; i += 4) {
-      const VAL_T bin0 = data_[data_indices[i]];
+      const VAL_T bin0 = data_[data_indices[i]]; // data_
       const VAL_T bin1 = data_[data_indices[i + 1]];
       const VAL_T bin2 = data_[data_indices[i + 2]];
       const VAL_T bin3 = data_[data_indices[i + 3]];
@@ -312,6 +312,7 @@ public:
 
 protected:
   data_size_t num_data_;
+  // ?
   std::vector<VAL_T> data_;
 };
 

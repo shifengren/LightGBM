@@ -167,6 +167,7 @@ Tree* SerialTreeLearner::Train(const score_t* gradients, const score_t *hessians
   init_train_time += std::chrono::steady_clock::now() - start_time;
   #endif
 
+  // 每棵树都需要事先指定叶子节点
   auto tree = std::unique_ptr<Tree>(new Tree(tree_config_->num_leaves));
   // root leaf
   int left_leaf = 0;
@@ -426,6 +427,7 @@ void SerialTreeLearner::FindBestSplits() {
     if (!is_feature_used_[feature_index]) continue;
     if (parent_leaf_histogram_array_ != nullptr
         && !parent_leaf_histogram_array_[feature_index].is_splittable()) {
+          //
       smaller_leaf_histogram_array_[feature_index].set_is_splittable(false);
       continue;
     }

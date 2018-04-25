@@ -388,7 +388,7 @@ bool GBDT::TrainOneIter(const score_t* gradients, const score_t* hessians) {
     #ifdef TIMETAG
     auto start_time = std::chrono::steady_clock::now();
     #endif
-    // 作用，大概hi获取gradient
+    // 作用:获取gradient和hessian，由gradients_和hessians保存
     Boosting();
     gradients = gradients_.data();
     hessians = hessians_.data();
@@ -415,6 +415,8 @@ bool GBDT::TrainOneIter(const score_t* gradients, const score_t* hessians) {
     #ifdef TIMETAG
     start_time = std::chrono::steady_clock::now();
     #endif
+    // 当前树所用grad和hess在原始向量中的偏移位置
+    // 多分类问题中，每棵树都需要使用整个数据，因此每棵树对同一条数据可能有不同的grad和hess
     const size_t bias = static_cast<size_t>(cur_tree_id) * num_data_;
     std::unique_ptr<Tree> new_tree(new Tree(2));
     if (class_need_train_[cur_tree_id]) {
@@ -430,7 +432,7 @@ bool GBDT::TrainOneIter(const score_t* gradients, const score_t* hessians) {
         grad = gradients_.data() + bias;
         hess = hessians_.data() + bias;
       }
-
+      // 使用训练器(比如,serial_learner训练器)训练新树
       new_tree.reset(tree_learner_->Train(grad, hess, is_constant_hessian_));
     }
 
